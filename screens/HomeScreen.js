@@ -7,14 +7,17 @@ import {
   Alert,
   Dimensions,
   StyleSheet,
+  Text,
+  Button,
 } from "react-native";
 import ImagePickerComponent from "../components/ImagePickerComponent";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const imageWidth = width * 0.8;
 
 const HomeScreen = () => {
   const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadStatus, setUploadStatus] = useState(null);
 
   const handleSelectImage = (uris) => {
     const newImages = [...selectedImages, ...uris];
@@ -22,20 +25,53 @@ const HomeScreen = () => {
   };
 
   const handleRemoveImage = (index) => {
-    Alert.alert("Xóa ảnh", "Bạn có chắc chắn muốn xóa ảnh này?", [
-      {
-        text: "Hủy",
-        style: "cancel",
-      },
-      {
-        text: "Xóa",
-        onPress: () => {
-          const newImages = [...selectedImages];
-          newImages.splice(index, 1);
-          setSelectedImages(newImages);
-        },
-      },
-    ]);
+    const newImages = [...selectedImages];
+    newImages.splice(index, 1);
+    setSelectedImages(newImages);
+  };
+
+  const handleUploadImages = async () => {
+    if (selectedImages.length === 0) {
+      Alert.alert("Chưa có ảnh", "Hãy chọn ít nhất một ảnh để tải lên.");
+      return;
+    }
+
+    const formData = new FormData();
+    selectedImages.forEach((uri, index) => {
+      formData.append(`image_${index}`, {
+        uri: uri,
+        type: "image/jpeg",
+        name: `image_${index}.jpg`,
+      });
+    });
+
+    try {
+      const response = await fetch(
+        "http://duyminhhome.tpddns.cn:3000/api/upload-mattruoc",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Response Status:", response.status); // In ra status code của phản hồi từ API
+
+      if (response.status === 200) {
+        const responseJson = await response.json();
+        console.log("API Response Data:", responseJson); // In ra dữ liệu từ API
+        console.log("Tải ảnh lên thành công!");
+        setUploadStatus("Tải ảnh lên thành công!");
+      } else {
+        console.log("Có lỗi xảy ra khi tải ảnh lên.");
+        setUploadStatus("Có lỗi xảy ra khi tải ảnh lên.");
+      }
+    } catch (error) {
+      console.log("Có lỗi xảy ra khi tải ảnh lên:", error); // In ra lỗi (nếu có)
+      setUploadStatus("Có lỗi xảy ra khi tải ảnh lên.");
+    }
   };
 
   return (
@@ -51,6 +87,8 @@ const HomeScreen = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <Button title="Tải ảnh lên" onPress={handleUploadImages} />
+      {uploadStatus && <Text>{uploadStatus}</Text>}
     </View>
   );
 };

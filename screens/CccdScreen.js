@@ -1,4 +1,3 @@
-// CccdScreen.js
 import React, { useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import QRScannerComponent from "../components/QRScannerComponent";

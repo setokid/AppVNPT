@@ -9,10 +9,13 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-clipboard/clipboard": "^1.12.1",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
+    "axios": "^1.6.0",
     "expo": "~49.0.15",
     "expo-barcode-scanner": "~12.5.3",
+    "expo-camera": "~13.4.4",
     "expo-image-picker": "~14.3.2",
     "expo-permissions": "~14.2.1",
     "expo-status-bar": "~1.6.0",
