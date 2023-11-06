@@ -18,7 +18,7 @@ const QRScannerComponent = ({ onQRCodeScanned, isScanning, onDataScanned }) => {
 
   const handleBarCodeScanned = ({ data }) => {
     if (!scanned) {
-      setScanned(true);
+      // setScanned(true);
       onQRCodeScanned(data);
       onDataScanned(data);
       setCameraEnabled(false); // Tắt máy ảnh sau khi quét thành công
@@ -26,8 +26,12 @@ const QRScannerComponent = ({ onQRCodeScanned, isScanning, onDataScanned }) => {
   };
 
   const handleScanAgain = () => {
-    setScanned(false);
+    // setScanned(false);
     setCameraEnabled(true); // Mở lại máy ảnh để quét lại
+  };
+
+  const toggleCamera = () => {
+    setCameraEnabled(!cameraEnabled); // Bật hoặc tắt máy ảnh
   };
 
   if (hasPermission === null) {
@@ -39,6 +43,10 @@ const QRScannerComponent = ({ onQRCodeScanned, isScanning, onDataScanned }) => {
 
   return (
     <View style={styles.container}>
+      <Button
+        title={cameraEnabled ? "Tắt Camera" : "Bật Camera"}
+        onPress={toggleCamera}
+      />
       {cameraEnabled && !scanned && (
         <View style={styles.scanner}>
           <BarCodeScanner

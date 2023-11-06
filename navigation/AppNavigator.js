@@ -8,9 +8,9 @@ const Drawer = createDrawerNavigator();
 function AppNavigator() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="HomeScreen" component={HomeScreen} />
-      <Drawer.Screen name="CccdScreen" component={CccdScreen} />
-      <Drawer.Screen name="BarcodeScreen" component={BarcodeScreen} />
+      <Drawer.Screen name="Chụp Ảnh" component={HomeScreen} />
+      <Drawer.Screen name="Quét CCCD" component={CccdScreen} />
+      <Drawer.Screen name="Quét mã vạch" component={BarcodeScreen} />
     </Drawer.Navigator>
   );
 }
